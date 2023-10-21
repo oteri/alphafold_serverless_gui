@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    user: "${UID}:${GID}"
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    command: ["sh", "-c", "cd frontend && npm start"]
+    environment:
+      - CHOKIDAR_USEPOLLING=true

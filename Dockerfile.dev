@@ -1,0 +1,6 @@
+FROM node:16
+
+WORKDIR /app
+
+# Install create-react-app globally inside the container
+RUN npm install -g create-react-app
