@@ -6,7 +6,11 @@ function App() {
   const [files, setFiles] = useState([]);
 
   const handleFileUpload = acceptedFiles => {
-    setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
+    const acceptedExtensions = ['fasta', 'a3m']
+    const filteredFiles = acceptedFiles.filter(file =>
+      acceptedExtensions.includes(file.name.split('.').pop())
+    );
+    setFiles(prevFiles => [...prevFiles, ...filteredFiles]);
   };
 
   const handleSubmit = () => {
@@ -16,7 +20,7 @@ function App() {
 
   return (
     <div>
-      <FileUpload onFileUpload={handleFileUpload} acceptedExtensions={['fasta', 'a3m']} />
+      <FileUpload onFileUpload={handleFileUpload} />
       <button onClick={handleSubmit}>Submit</button>
       <FileList files={files} />
     </div>

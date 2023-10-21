@@ -32,13 +32,10 @@ const UploadButton = styled.button`
   }
 `;
 
-function FileUpload({ onFileUpload, acceptedExtensions }) {
+function FileUpload({ onFileUpload }) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: acceptedFiles => {
-      const filteredFiles = acceptedFiles.filter(file =>
-        acceptedExtensions.includes(file.name.split('.').pop())
-      );
-      onFileUpload(filteredFiles);
+      onFileUpload(acceptedFiles);
     },
     multiple: true,
   });
