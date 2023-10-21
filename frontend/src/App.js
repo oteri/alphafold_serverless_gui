@@ -1,23 +1,18 @@
-import './App.css';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import FileList from './FileList';
+import FileUpload from './FileUpload';
 
 function App() {
+  const [files, setFiles] = useState([]);
+
+  const handleFileUpload = acceptedFiles => {
+    setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <FileUpload onFileUpload={handleFileUpload} />
+      <FileList files={files} />
     </div>
   );
 }
