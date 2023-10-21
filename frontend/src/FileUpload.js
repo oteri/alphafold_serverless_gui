@@ -32,10 +32,13 @@ const UploadButton = styled.button`
   }
 `;
 
-function FileUpload({ onFileUpload }) {
+function FileUpload({ onFileUpload, acceptedExtensions }) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: acceptedFiles => {
-      onFileUpload(acceptedFiles);
+      const filteredFiles = acceptedFiles.filter(file =>
+        acceptedExtensions.includes(file.name.split('.').pop())
+      );
+      onFileUpload(filteredFiles);
     },
     multiple: true,
   });
@@ -48,5 +51,6 @@ function FileUpload({ onFileUpload }) {
     </Container>
   );
 };
+
 
 export default FileUpload;
