@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import FileList from './FileList';
 import FileUpload from './FileUpload';
-
+import { filterFilesToUpload } from './file_utils';
 function App() {
   const [files, setFiles] = useState([]);
 
   const handleFileUpload = acceptedFiles => {
-    const acceptedExtensions = ['fasta', 'a3m']
-    const filteredFiles = acceptedFiles.filter(file =>
-      acceptedExtensions.includes(file.name.split('.').pop())
-    );
+    const filteredFiles = filterFilesToUpload(acceptedFiles);
     setFiles(prevFiles => [...prevFiles, ...filteredFiles]);
   };
 
