@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div>
-      <FileUpload onFileUpload={handleFileUpload} />
+      <FileUpload onFileUpload={handleFileUpload} acceptedExtensions={['fasta', 'a3m']} />
       <FileList files={files} />
     </div>
   );
