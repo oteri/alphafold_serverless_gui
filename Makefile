@@ -1,7 +1,7 @@
 .PHONY: build
 
 # Target to scaffold the React app using create-react-app inside the Docker container
-build:
+init:
 	# Check if the "frontend" directory exists. If it does, abort the build.
 	if [ -d "frontend" ]; then \
 		echo "Error: The 'frontend' directory already exists. Please remove it before building the app."; \
