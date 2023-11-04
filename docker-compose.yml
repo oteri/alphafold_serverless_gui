@@ -1,10 +1,6 @@
 version: '3.8'
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+services: #For some reasons, pulling from docker-compose doesn't work
     user: "${UID}:${GID}"
     volumes:
       - ./frontend:/app/frontend
