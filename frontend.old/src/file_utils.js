@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+
 export function filterFilesToUpload(acceptedFiles) {
     const acceptedExtensions = ['fasta', 'a3m']
     const filteredFiles = acceptedFiles.filter(file =>
@@ -7,7 +8,7 @@ export function filterFilesToUpload(acceptedFiles) {
     return filteredFiles
 }
 
-function uploadFileToS3(file, bucketName, accessKeyId, secretAccessKey, region) {
+function uploadFileToS3(file) {
     const s3 = new AWS.S3({
         endpoint: `http://${process.env.MINIO_SERVER_URL}`, // Update if your MinIO is on a different endpoint
         accessKeyId: process.env.MINIO_ACCESS_KEY,
