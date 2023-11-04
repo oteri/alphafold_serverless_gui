@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
@@ -32,7 +31,9 @@ const UploadButton = styled.button`
   }
 `;
 
-function FileUpload({ onFileUpload }) {
+type CallbackType = (arg: File[]) => void;
+
+function FileUpload(onFileUpload: CallbackType) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: acceptedFiles => {
       onFileUpload(acceptedFiles);

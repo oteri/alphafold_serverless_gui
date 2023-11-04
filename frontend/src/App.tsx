@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ProgressBar from 'react-progressbar';
 import FileList from './FileList';
 import FileUpload from './FileUpload';
 import { filterFilesToUpload, uploadFilesToS3 } from './file_utils';
 function App() {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileUpload = async acceptedFiles => {
+  const handleFileUpload = (acceptedFiles: File[]) => {
     const filteredFiles = filterFilesToUpload(acceptedFiles);
     await uploadFilesToS3(filteredFiles)
     setFiles(prevFiles => [...prevFiles, ...filteredFiles]);

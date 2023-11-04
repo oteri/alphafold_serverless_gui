@@ -11,7 +11,7 @@ init:
 	docker build -t dev-image -f Dockerfile.dev .
 	# Next, we'll run a temporary container from this image to execute create-react-app
 	# Set the user for the Docker process using --user
-	docker  run --rm --user "$(shell id -u):$(shell id -g)"  -v ./frontend:/app -w /app -i -t  node:16  bash -c "mkdir frontend && cd frontend && npx create-react-app . frontend  --template typescript"
+	docker  run --rm --user "$(shell id -u):$(shell id -g)"  -v ./frontend:/app -w /app -i -t  node:16  bash -c "npx create-vite@latest frontend --template react-ts"
 
 start:
 	UID=$(shell id -u) GID=$(shell id -g) docker compose up

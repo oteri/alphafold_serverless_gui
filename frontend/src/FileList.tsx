@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const FileListWrapper = styled.ul`
@@ -10,11 +9,11 @@ const FileItem = styled.li`
     margin: 10px 0;
 `;
 
-function FileList({ files }) {
+function FileList(files: File[]) {
     return (
         <FileListWrapper>
             {files.map(file => (
-                <FileItem key={file.path}>{file.path}</FileItem>
+                <FileItem key={file.name}>{file.name}</FileItem>
             ))}
         </FileListWrapper>
     );

@@ -1,14 +1,14 @@
 import AWS from 'aws-sdk';
 
-export function filterFilesToUpload(acceptedFiles) {
-    const acceptedExtensions = ['fasta', 'a3m']
+export function filterFilesToUpload(acceptedFiles: File[]): File[] {
+    const acceptedExtensions = ['fasta', 'a3m'];
     const filteredFiles = acceptedFiles.filter(file =>
-        acceptedExtensions.includes(file.name.split('.').pop())
+      acceptedExtensions.includes(file.name.split('.').pop() as string)
     );
-    return filteredFiles
-}
+    return filteredFiles;
+  }
 
-function uploadFileToS3(file) {
+function uploadFileToS3(file:File) {
     const s3 = new AWS.S3({
         endpoint: `http://${process.env.MINIO_SERVER_URL}`, // Update if your MinIO is on a different endpoint
         accessKeyId: process.env.MINIO_ACCESS_KEY,
@@ -17,15 +17,15 @@ function uploadFileToS3(file) {
         signatureVersion: 'v4',
     });
 
-    const params = {
-        Bucket: process.env.MINIO_BUCKET_NAME,
+    const params: AWS.S3.PutObjectRequest = {
+        Bucket: process.env.MINIO_BUCKET_NAME as string,
         Key: file.name,
         Body: file,
         ContentType: file.type
     };
 
     return new Promise((resolve, reject) => {
-        s3.upload(params, function (error, data) {
+        s3.upload(params, function (error:Error, data:AWS.S3.ManagedUpload.SendData) {
             if (error) {
                 reject(error);
             } else {
@@ -37,10 +37,10 @@ function uploadFileToS3(file) {
 
 
 
-export async function uploadFilesToS3(acceptedFiles, bucketName, accessKeyId, secretAccessKey, region) {
+export async function uploadFilesToS3(acceptedFiles:File[]) {
     try {
         for (let file of acceptedFiles) {
-            const response = await uploadFileToS3(file, bucketName, accessKeyId, secretAccessKey, region);
+            const response = await uploadFileToS3(file);
             console.log('Uploaded file:', response);
         }
     } catch (error) {
