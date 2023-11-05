@@ -8,10 +8,10 @@ services: #For some reasons, pulling from docker-compose doesn't work
     volumes:
       - ./frontend:/app/frontend
     ports:
-      - "3000:3000"
+      - "3000:5173"
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: ["npm", "start"]
+    command: ["npx","vite","--host","0.0.0.0"]
 
 
   minio:
