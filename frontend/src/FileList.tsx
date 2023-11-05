@@ -8,8 +8,10 @@ const FileListWrapper = styled.ul`
 const FileItem = styled.li`
     margin: 10px 0;
 `;
-
-function FileList(files: File[]) {
+type FileListProps = {
+    files: File[]
+}
+function FileList({files}:FileListProps) {
     return (
         <FileListWrapper>
             {files.map(file => (

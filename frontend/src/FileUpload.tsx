@@ -1,5 +1,7 @@
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
+import { FC } from 'react';
+
 
 const Container = styled.div`
   width: 300px;
@@ -30,10 +32,11 @@ const UploadButton = styled.button`
     background-color: #d9d9d9;
   }
 `;
+interface FileUploadProps {
+  onFileUpload: (files: File[]) => void;
+}
 
-type CallbackType = (arg: File[]) => void;
-
-function FileUpload(onFileUpload: CallbackType) {
+const FileUpload: FC<FileUploadProps> = ({ onFileUpload }) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: acceptedFiles => {
       onFileUpload(acceptedFiles);
@@ -49,6 +52,5 @@ function FileUpload(onFileUpload: CallbackType) {
     </Container>
   );
 };
-
 
 export default FileUpload;

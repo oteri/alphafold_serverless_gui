@@ -3,16 +3,22 @@ import ProgressBar from 'react-progressbar';
 import FileList from './FileList';
 import FileUpload from './FileUpload';
 import { filterFilesToUpload, uploadFilesToS3 } from './file_utils';
+
+type CallbackType = (arg: File[]) => void;
+
 function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleFileUpload = (acceptedFiles: File[]) => {
+  function handleFileUpload(acceptedFiles: File[]): void {
     const filteredFiles = filterFilesToUpload(acceptedFiles);
-    await uploadFilesToS3(filteredFiles)
+    uploadFilesToS3(filteredFiles)
     setFiles(prevFiles => [...prevFiles, ...filteredFiles]);
     setUploadProgress(100); // Assuming all files uploaded successfully
   };
+
+
+
 
   const handleSubmit = () => {
     // Handle submit action here
@@ -21,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <FileUpload onFileUpload={handleFileUpload} />
+      <FileUpload onFileUpload={handleFileUpload as CallbackType} />
       <button onClick={handleSubmit}>Submit</button>
       <ProgressBar completed={uploadProgress} />
       <FileList files={files} />
