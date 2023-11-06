@@ -13,7 +13,8 @@ services: #For some reasons, pulling from docker-compose doesn't work
       MINIO_ROOT_PASSWORD: $MINIO_ROOT_PASSWORD
       MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
       MINIO_SECRET_KEY: $MINIO_SECRET_KEY
-      MINIO_SERVER_URL: http://localhost:9000  # Explicitly setting the server URL
+      MINIO_BUCKET_NAME: $MINIO_BUCKET_NAME
+      MINIO_SERVER_URL: $MINIO_SERVER_URL
     command: ["npx","vite","--host","0.0.0.0"]
 
 
@@ -27,9 +28,7 @@ services: #For some reasons, pulling from docker-compose doesn't work
     environment:
       MINIO_ROOT_USER: $MINIO_ROOT_USER
       MINIO_ROOT_PASSWORD: $MINIO_ROOT_PASSWORD
-      MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
-      MINIO_SECRET_KEY: $MINIO_SECRET_KEY
-      MINIO_SERVER_URL: http://localhost:9000  # Explicitly setting the server URL
+      MINIO_SERVER_URL: $MINIO_SERVER_URL
     command: server /data --console-address ":9001"  # Specifying console address
 
 volumes:
