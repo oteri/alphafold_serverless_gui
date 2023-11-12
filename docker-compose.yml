@@ -15,6 +15,7 @@ services: #For some reasons, pulling from docker-compose doesn't work
       MINIO_SECRET_KEY: $MINIO_SECRET_KEY
       MINIO_BUCKET_NAME: $MINIO_BUCKET_NAME
       MINIO_SERVER_URL: $MINIO_SERVER_URL
+      MINIO_REGION: $MINIO_REGION
     command: ["npx","vite","--host","0.0.0.0"]
 
 

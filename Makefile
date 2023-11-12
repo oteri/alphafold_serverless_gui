@@ -1,4 +1,4 @@
-.PHONY: build
+	.PHONY: build
 
 # Target to scaffold the React app using create-react-app inside the Docker container
 init:

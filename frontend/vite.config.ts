@@ -11,7 +11,9 @@ export default defineConfig({
     'process.env.MINIO_SECRET_KEY': JSON.stringify(process.env.MINIO_SECRET_KEY),
     'process.env.MINIO_BUCKET_NAME': JSON.stringify(process.env.MINIO_BUCKET_NAME),
     'process.env.MINIO_SERVER_URL': JSON.stringify(process.env.MINIO_SERVER_URL),
+    'process.env.MINIO_REGION': JSON.stringify(process.env.MINIO_REGION),
   },
+  server: { hmr: true },
   optimizeDeps: {
     esbuildOptions: {
       define: {

@@ -28,7 +28,7 @@ function App() {
   return (
     <div>
       <FileUpload onFileUpload={handleFileUpload as CallbackType} />
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}>Submit Computations</button>
       <ProgressBar completed={uploadProgress} />
       <FileList files={files} />
     </div>

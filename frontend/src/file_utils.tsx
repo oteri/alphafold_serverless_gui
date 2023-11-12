@@ -1,5 +1,4 @@
-import AWS from 'aws-sdk';
-
+import {  S3, S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 export function filterFilesToUpload(acceptedFiles: File[]): File[] {
     const acceptedExtensions = ['fasta', 'a3m'];
     const filteredFiles = acceptedFiles.filter(file =>
@@ -8,31 +7,33 @@ export function filterFilesToUpload(acceptedFiles: File[]): File[] {
     return filteredFiles;
   }
 
-function uploadFileToS3(file:File) {
-    const s3 = new AWS.S3({
-        endpoint: `http://${process.env.MINIO_SERVER_URL}`, // Update if your MinIO is on a different endpoint
-        accessKeyId: process.env.MINIO_ACCESS_KEY,
-        secretAccessKey: process.env.MINIO_SECRET_KEY,
-        s3ForcePathStyle: true, // Set this to true for MinIO compatibility
-        signatureVersion: 'v4',
-    });
+async function uploadFileToS3(file:File) {
+    const credentials = {
+        accessKeyId: process.env.MINIO_ACCESS_KEY as string,
+        secretAccessKey: process.env.MINIO_SECRET_KEY as string,
+    };
+    const awsConfig = {
+        region: process.env.MINIO_REGION ,
+        credentials: credentials,
+        endpoint: process.env.MINIO_SERVER_URL,
+        s3ForcePathStyle: true,
+        forcePathStyle: true,
+        signatureVersion: 'v4', // Uncomment if necessary
+      };
+    const s3Client = new S3Client(awsConfig);
 
-    const params: AWS.S3.PutObjectRequest = {
-        Bucket: process.env.MINIO_BUCKET_NAME as string,
-        Key: file.name,
-        Body: file,
-        ContentType: file.type
+    const contentType = file.type || 'application/octet-stream'; // Use the file's MIME type or a default
+    const arrayBuffer = await file.arrayBuffer()
+    const content = new Blob([arrayBuffer], { type: contentType });
+
+    const params = {
+    Bucket: process.env.MINIO_BUCKET_NAME as string,
+    Key: file.name,
+    Body: content,
     };
 
-    return new Promise((resolve, reject) => {
-        s3.upload(params, function (error:Error, data:AWS.S3.ManagedUpload.SendData) {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-    });
+    const ret = await s3Client.send(new PutObjectCommand(params));
+    console.info(ret)
 }
 
 
