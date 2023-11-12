@@ -15,7 +15,7 @@ function App() {
     setFiles(prevFiles => [...prevFiles, ...filteredFiles]);
     setUploadProgress(100); // Assuming all files uploaded successfully
 
-    const displayUrl = (url: string) => {
+    const uploadedFile = (url: string) => {
       console.log('Uploaded file URL:', url);
     };
 
@@ -23,7 +23,7 @@ function App() {
       console.error(`Error uploading file ${file.name}: ${error.message}`);
     }
 
-    uploadFilesToS3(filteredFiles, uploadFileToS3, displayUrl, handleError)
+    uploadFilesToS3(filteredFiles, uploadFileToS3, uploadedFile, handleError)
 
   };
 
