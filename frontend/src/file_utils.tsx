@@ -1,5 +1,6 @@
 import {  S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
 export function filterFilesToUpload(acceptedFiles: File[]): File[] {
     const acceptedExtensions = ['fasta', 'a3m'];
     const filteredFiles = acceptedFiles.filter(file =>
@@ -8,7 +9,7 @@ export function filterFilesToUpload(acceptedFiles: File[]): File[] {
     return filteredFiles;
   }
 
-async function uploadFileToS3(file:File) {
+export async function uploadFileToS3(file:File) {
     const credentials = {
         accessKeyId: process.env.MINIO_ACCESS_KEY as string,
         secretAccessKey: process.env.MINIO_SECRET_KEY as string,
@@ -34,36 +35,35 @@ async function uploadFileToS3(file:File) {
     };
 
     const putCommand = new PutObjectCommand(params)
-    try {
-        const ret = await s3Client.send(putCommand);
-        console.info(ret)
-    } catch (error) {
-        console.error('Error uploading:', error, 'File name:', file.name);
-        throw error;
-    }
+    await s3Client.send(putCommand);
 
-    const command = new GetObjectCommand(params);
+    const getCommand = new GetObjectCommand(params);
 
     try {
-        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
+        const url = await getSignedUrl(s3Client, getCommand, { expiresIn: 3600 }); // URL expires in 1 hour
         return url;
       } catch (error) {
-        console.error('Error generating pre-signed URL:', error, 'File name:', file.name);
         throw error;
       }
 }
 
 
-
-export async function uploadFilesToS3(acceptedFiles:File[]) {
+export async function uploadFilesToS3(
+    acceptedFiles: File[],
+    uploadFile: (file: File) => Promise<string>,
+    action: (url: string) => void,
+    handleError: (file: File, error: Error) => void
+  ): Promise<void> {
     for (let file of acceptedFiles) {
-        try {
-            const url = await uploadFileToS3(file);
-            if(url !== null){
-                console.log('Pre-signed URL:', url)
-            }
-        } catch (error) {
-            console.error('Error uploading:', error);
+      try {
+        const url = await uploadFile(file);
+        if (url !== null) {
+          action(url);
         }
+      } catch (error) {
+        handleError(file, error);
+      }
     }
-}
+  }
+
+
