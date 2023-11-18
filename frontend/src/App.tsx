@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ProgressBar from 'react-progressbar';
 import FileList from './FileList';
 import FileUpload from './FileUpload';
-import { filterFilesToUpload, uploadFileToS3, uploadFilesToS3 } from './file_utils';
+import { filterFilesToUpload } from './file_utils';
 
 type CallbackType = (arg: File[]) => void;
 
