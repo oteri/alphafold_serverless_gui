@@ -13,22 +13,7 @@ function App() {
   function handleFileUpload(acceptedFiles: File[]): void {
     const filteredFiles = filterFilesToUpload(acceptedFiles);
     setFiles(prevFiles => [...prevFiles, ...filteredFiles]);
-    setUploadProgress(100); // Assuming all files uploaded successfully
-
-    const uploadedFile = (url: string) => {
-      console.log('Uploaded file URL:', url);
-    };
-
-    const handleError = (file: File, error: Error)=> {
-      console.error(`Error uploading file ${file.name}: ${error.message}`);
-    }
-
-    uploadFilesToS3(filteredFiles, uploadFileToS3, uploadedFile, handleError)
-
   };
-
-
-
 
   const handleSubmit = () => {
     // Handle submit action here

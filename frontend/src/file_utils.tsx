@@ -46,24 +46,3 @@ export async function uploadFileToS3(file:File) {
         throw error;
       }
 }
-
-
-export async function uploadFilesToS3(
-    acceptedFiles: File[],
-    uploadFile: (file: File) => Promise<string>,
-    action: (url: string) => void,
-    handleError: (file: File, error: Error) => void
-  ): Promise<void> {
-    for (let file of acceptedFiles) {
-      try {
-        const url = await uploadFile(file);
-        if (url !== null) {
-          action(url);
-        }
-      } catch (error) {
-        handleError(file, error);
-      }
-    }
-  }
-
-
