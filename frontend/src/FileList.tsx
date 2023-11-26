@@ -6,13 +6,18 @@ const FileListWrapper = styled.ul`
 `;
 interface FileListProps {
     files: File[];
+    fileRefs: Map<string, React.RefObject<FileItemHandle>>; // Add this line
 }
 
-function FileList({ files }: FileListProps) {
+function FileList({ files, fileRefs }: FileListProps) {
     return (
         <FileListWrapper>
             {files.map(file => (
-                <FileItem key={file.name} file={file} />
+                <FileItem
+                    key={file.name}
+                    file={file}
+                    ref={fileRefs.get(file.name)} // Pass the ref here
+                />
             ))}
         </FileListWrapper>
     );
