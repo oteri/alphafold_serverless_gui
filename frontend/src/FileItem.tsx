@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { uploadFileToS3 } from './file_utils';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-
+import { submitJob, checkJobStatus } from './submission_utils'
 
 const StyledFileItem = styled.li`
     margin: 10px 0;
@@ -44,8 +44,12 @@ export const FileItem = React.forwardRef<FileItemHandle, FileItemProps>(({ file 
     useImperativeHandle(ref, () => ({
         handleSubmitEvent() {
             console.log('Submit file URL:', fileUrl);
+            if(fileUrl!==null){
+                const jobId = submitJob(fileUrl);
+                console.log('JobId:', jobId);
+            }
         }
-      }));
+    }));
 
     return <StyledFileItem>{file.name}</StyledFileItem>;
 })
