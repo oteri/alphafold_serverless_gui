@@ -1,6 +1,6 @@
 version: '3.8'
 
-services: #For some reasons, pulling from docker-compose doesn't work
+services:
   app:
     image: node:18
     working_dir: /app/frontend
@@ -16,6 +16,8 @@ services: #For some reasons, pulling from docker-compose doesn't work
       MINIO_BUCKET_NAME: $MINIO_BUCKET_NAME
       MINIO_SERVER_URL: $MINIO_SERVER_URL
       MINIO_REGION: $MINIO_REGION
+      RUNPOD_API_TOKEN: $RUNPOD_API_TOKEN
+      RUNPOD_API_ENDPOINT: $RUNPOD_API_ENDPOINT
     command: ["npx","vite","--host","0.0.0.0"]
 
 

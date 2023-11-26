@@ -12,6 +12,8 @@ export default defineConfig({
     'process.env.MINIO_BUCKET_NAME': JSON.stringify(process.env.MINIO_BUCKET_NAME),
     'process.env.MINIO_SERVER_URL': JSON.stringify(process.env.MINIO_SERVER_URL),
     'process.env.MINIO_REGION': JSON.stringify(process.env.MINIO_REGION),
+    'process.env.RUNPOD_API_TOKEN': JSON.stringify(process.env.RUNPOD_API_TOKEN),
+    'process.env.RUNPOD_API_ENDPOINT': JSON.stringify(process.env.RUNPOD_API_ENDPOINT),
   },
   server: { hmr: true },
   optimizeDeps: {
