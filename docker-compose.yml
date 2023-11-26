@@ -2,7 +2,7 @@ version: '3.8'
 
 services: #For some reasons, pulling from docker-compose doesn't work
   app:
-    image: node:16
+    image: node:18
     working_dir: /app/frontend
     volumes:
       - ./frontend:/app/frontend
