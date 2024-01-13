@@ -1,7 +1,10 @@
-export async function submitJob(s3_url:string):Promise<string | null>{
+export async function submitJob(bucket_name:string, object_name:string):Promise<string | null>{
     const payload = {
         input: {
-            s3_url: s3_url,
+            s3:{
+                bucket_name:bucket_name,
+                object_name:object_name,
+            }
         }
     };
 
@@ -27,7 +30,7 @@ export async function submitJob(s3_url:string):Promise<string | null>{
         console.error('Error submitting job:', error);
         return null
     }
-};
+}
 
 export type JobStatus = "IN_QUEUE" | "IN_PROGRESS" | "CANCELLED" |"FAILED" | "COMPLETED";
 

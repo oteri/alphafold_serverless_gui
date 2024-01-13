@@ -1,4 +1,4 @@
-import {  S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export function filterFilesToUpload(acceptedFiles: File[]): File[] {
@@ -11,13 +11,13 @@ export function filterFilesToUpload(acceptedFiles: File[]): File[] {
 
 export async function uploadFileToS3(file:File) {
     const credentials = {
-        accessKeyId: process.env.MINIO_ACCESS_KEY as string,
-        secretAccessKey: process.env.MINIO_SECRET_KEY as string,
+        accessKeyId: process.env.BUCKET_ACCESS_KEY_ID as string,
+        secretAccessKey: process.env.BUCKET_SECRET_ACCESS_KEY as string,
     };
     const awsConfig = {
-        region: process.env.MINIO_REGION ,
+        region: process.env.BUCKET_REGION ,
         credentials: credentials,
-        endpoint: process.env.MINIO_SERVER_URL,
+        endpoint: process.env.BUCKET_ENDPOINT_URL,
         s3ForcePathStyle: true,
         forcePathStyle: true,
         signatureVersion: 'v4',
@@ -29,7 +29,7 @@ export async function uploadFileToS3(file:File) {
     const content = new Blob([arrayBuffer], { type: contentType });
 
     const params = {
-    Bucket: process.env.MINIO_BUCKET_NAME as string,
+    Bucket: process.env.BUCKET_NAME as string,
     Key: file.name,
     Body: content,
     };

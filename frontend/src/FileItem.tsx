@@ -1,7 +1,7 @@
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { uploadFileToS3 } from './file_utils';
-import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
-import { submitJob, checkJobStatus } from './submission_utils';
+import { checkJobStatus, submitJob } from './submission_utils';
 
 
 const StyledFileItem = styled.li`
@@ -17,16 +17,16 @@ file: File;
 }
 
 export const FileItem = React.forwardRef<FileItemHandle, FileItemProps>(({ file }, ref) => {
-    const [fileUrl, setFileUrl] = useState<string|null>(null);
+    const [fileName, setFileName] = useState<string|null>(null);
     const [jobId, setJobId] = useState<string|null>(null);
     const [jobStatus, setJobStatus] = useState<string|null>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const upload = async () => {
-            const uploadedFile = (url: string) => {
+            const uploadedFile = (name: string, url:string) => {
                 console.log('Uploaded file URL:', url);
-                setFileUrl(url)
+                setFileName(name)
             };
 
             const handleError = (error: Error) => {
@@ -36,7 +36,7 @@ export const FileItem = React.forwardRef<FileItemHandle, FileItemProps>(({ file 
             try {
                 const url = await uploadFileToS3(file);
                 if (url !== null) {
-                    uploadedFile(url);
+                    uploadedFile(file.name,url);
                 }
             } catch (error: any) { // Typed as any, or use a more specific type if known
                 handleError(error);
@@ -77,9 +77,9 @@ export const FileItem = React.forwardRef<FileItemHandle, FileItemProps>(({ file 
 
     useImperativeHandle(ref, () => ({
         async handleSubmitEvent() {
-            console.log('Submit file URL:', fileUrl);
-            if (fileUrl !== null) {
-                const newJobId = await submitJob(fileUrl);
+            console.log('Submit file URL:', fileName);
+            if (process.env.BUCKET_NAME!==undefined && fileName !== null) {
+                const newJobId = await submitJob(process.env.BUCKET_NAME,fileName);
                 if(newJobId!==null){
                     console.log('JobId:', newJobId);
                     setJobId(newJobId);
